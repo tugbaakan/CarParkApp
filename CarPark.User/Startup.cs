@@ -1,10 +1,17 @@
+using AspNetCore.Identity.MongoDbCore.Models;
+using CarPark.Business.Abstract;
+using CarPark.Business.Concrete;
 using CarPark.Core.Repository.Abstract;
 using CarPark.Core.Settings;
+using CarPark.DataAccess.Abstract;
+using CarPark.DataAccess.Concrete;
 using CarPark.DataAccess.Repository;
+using CarPark.Entities.Concrete;
 using CarPark.User.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +39,36 @@ namespace CarPark.User
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddAuthentication(option => {
+                option.DefaultScheme = IdentityConstants.ApplicationScheme;
+                option.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            }).AddIdentityCookies();
+
+            services.AddIdentityCore<Personnel>()
+                .AddRoles<MongoIdentityRole>()
+                .AddMongoDbStores<Personnel, MongoIdentityRole, Guid>(Configuration.GetSection("MongoConnection:ConnectionString").Value, Configuration.GetSection("MongoConnection:Database").Value)
+                .AddSignInManager()
+                .AddDefaultTokenProviders();
+
+
+            services.ConfigureApplicationCookie(option =>
+            {
+                option.Cookie.HttpOnly = true;
+                option.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                option.LoginPath = "/Account/Login";
+                option.SlidingExpiration = true;
+            });
+
+            services.AddScoped(typeof(IRepository<>), typeof(MongoRepositoryBase<>));
+            services.AddScoped<IPersonnelRepository, PersonnelRepository>();
+            services.AddScoped<IPersonnelService, PersonnelManager>();
+
+            services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<ICityService, CityManager>();
+
             services.AddControllersWithViews();
 
             services.Configure<MongoSettings>(options =>
@@ -40,7 +77,7 @@ namespace CarPark.User
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
             });
 
-            services.AddScoped(typeof(IRepository<>), typeof(MongoRepositoryBase<>));
+   
 
             // localization begin
             services.AddLocalization(opt => {
@@ -101,6 +138,7 @@ namespace CarPark.User
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             //localization begin

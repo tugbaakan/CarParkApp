@@ -9,18 +9,18 @@ namespace CarPark.Core.Repository.Abstract
 {
     public interface IRepository<TEntity> where TEntity: class, new()
     {
-        GetManyResult<TEntity> AsQuerable();
-        Task<GetManyResult<TEntity>> AsQuerableAsync();
+        GetManyResult<TEntity> GetAll();
+        Task<GetManyResult<TEntity>> GetAllAsync();
         GetManyResult<TEntity> FilterBy(Expression<Func<TEntity, bool>> filter );
         Task<GetManyResult<TEntity>> FilterByAsync(Expression<Func<TEntity, bool>> filter);
-        GetOneResult<TEntity> GetById(string id);
-        Task<GetOneResult<TEntity>> GetByIdAsync(string id);
+        GetOneResult<TEntity> GetById(string id, string type = "object");
+        Task<GetOneResult<TEntity>> GetByIdAsync(string id, string type = "object");
         GetOneResult<TEntity> InsertOne(TEntity entity);
         Task<GetOneResult<TEntity>> InsertOneAsync(TEntity entity);
         GetManyResult<TEntity> InsertMany(ICollection<TEntity> entities);
         Task<GetManyResult<TEntity>> InsertManyAsync(ICollection<TEntity> entities);
-        GetOneResult<TEntity> ReplaceOne(string id, TEntity entity);
-        Task<GetOneResult<TEntity>> ResplaceOneAsync(string id, TEntity entity);
+        GetOneResult<TEntity> ReplaceOne(string id, TEntity entity, string type = "object");
+        Task<GetOneResult<TEntity>> ReplaceOneAsync(string id, TEntity entity, string type = "object");
         GetOneResult<TEntity> DeleteOne(Expression<Func<TEntity, bool>> filter);
         Task<GetOneResult<TEntity>> DeleteOneAsync(Expression<Func<TEntity, bool>> filter);
         GetOneResult<TEntity> DeleteById(string id);

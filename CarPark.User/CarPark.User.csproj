@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.12.1" />
@@ -14,16 +16,20 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.MongoDB" Version="4.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarPark.Business\CarPark.Business.csproj" />
     <ProjectReference Include="..\CarPark.Core\CarPark.Core.csproj" />
     <ProjectReference Include="..\CarPark.DataAccess\CarPark.DataAccess.csproj" />
     <ProjectReference Include="..\CarPark.Entities\CarPark.Entities.csproj" />
+    <ProjectReference Include="..\CarPark.Models\CarPark.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Resources\Models\" />
+    <Folder Include="wwwroot\Media\Personnels\" />
   </ItemGroup>
 
 </Project>

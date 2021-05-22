@@ -66,11 +66,11 @@ namespace CarPark.User.Controllers
               }); */
 
             
-            var result4 = _personnelRepository.AsQuerable();
+            var result4 = _personnelRepository.GetAll();
             var result5 = _personnelRepository.DeleteOne(x => x.Email.Contains("akan.tugba4@gmail.com"));
             var result6 = _personnelRepository.GetById("606c27e9a234aff3cd44a54b");
             result6.Entity.UserName = "akantugba6";
-            result6.Entity.Password = "12346";
+            //result6.Entity.Password = "12346";
             result6.Entity.Email = "akan.tugba6@gmail.com";
             var result7 = _personnelRepository.ReplaceOne( result6.Entity.Id.ToString(), result6.Entity );
 
